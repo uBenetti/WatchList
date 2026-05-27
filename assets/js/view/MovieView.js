@@ -2,7 +2,7 @@
   VIEW: MovieView
   A View cuida da tela.
   Ela lê campos, escuta cliques e desenha os cards no HTML.
-  Ela não decide regras de negócio e não salva dados diretamente.
+  Ela não decide regras de negócio, não salva dados diretamente e delega as ações ao Presenter.
 */
 class MovieView {
   constructor() {

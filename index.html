@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Watchlist MVC</title>
+  <title>Watchlist MVP</title>
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
@@ -12,7 +12,7 @@
     <header class="hero">
       <h1>Watchlist</h1>
       <p class="hero__description">
-        Um catálogo simples para organizar filmes vistos e não vistos usando MVC.
+        Um catálogo simples para organizar filmes vistos e não vistos usando MVP.
       </p>
     </header>
 
@@ -116,11 +116,11 @@
     </section>
   </main>
 
-  <!-- Ordem importante: Model, View, Controller e por último o app. -->
+  <!-- Ordem importante: Model, View, Presenter e por último o app. -->
   <script src="assets/js/model/Movie.js"></script>
   <script src="assets/js/model/MovieRepository.js"></script>
   <script src="assets/js/view/MovieView.js"></script>
-  <script src="assets/js/controller/MovieController.js"></script>
+  <script src="assets/js/presenter/MoviePresenter.js"></script>
   <script src="assets/js/app.js"></script>
 </body>
 </html>
