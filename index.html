@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Watchlist MVC</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+  <main class="page" id="top">
+    <!-- Cabeçalho -->
+    <header class="hero">
+      <h1>Watchlist</h1>
+      <p class="hero__description">
+        Um catálogo simples para organizar filmes vistos e não vistos usando MVC.
+      </p>
+    </header>
+
+    <!-- Indicadores -->
+    <section class="stats" aria-label="Resumo da watchlist">
+      <article class="stat-card glass-panel">
+        <span>Filmes cadastrados</span>
+        <strong id="totalMovies">0</strong>
+      </article>
+
+      <article class="stat-card glass-panel">
+        <span>Assistidos</span>
+        <strong id="watchedMovies">0</strong>
+      </article>
+    </section>
+
+    <section class="layout">
+      <!-- Formulário -->
+      <section class="form-card glass-panel" aria-labelledby="formTitle">
+        <p class="section-label">Cadastro</p>
+        <h2 id="formTitle">Adicionar filme</h2>
+        <p class="section-description">
+          Preencha os dados principais do filme. O mesmo formulário também serve para editar.
+        </p>
+
+        <form id="movieForm" novalidate>
+          <input type="hidden" id="movieId" />
+
+          <div class="field-group">
+            <label for="title">Nome do filme</label>
+            <input id="title" name="title" type="text" placeholder="Ex: Ainda Estou Aqui" autocomplete="off" />
+          </div>
+
+          <div class="field-group">
+            <label for="year">Ano</label>
+            <input id="year" name="year" type="number" placeholder="2024" min="1888" max="2100" />
+          </div>
+
+          <div class="field-group">
+            <label for="genre">Gênero</label>
+            <select id="genre" name="genre">
+              <option value="">Selecione</option>
+              <option value="Ação">Ação</option>
+              <option value="Animação">Animação</option>
+              <option value="Comédia">Comédia</option>
+              <option value="Drama">Drama</option>
+              <option value="Ficção científica">Ficção científica</option>
+              <option value="Romance">Romance</option>
+              <option value="Suspense">Suspense</option>
+              <option value="Terror">Terror</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="synopsis">Sinopse curta</label>
+            <textarea id="synopsis" name="synopsis" maxlength="150" placeholder="Escreva uma sinopse simples em até 150 caracteres."></textarea>
+            <small>Máximo de 150 caracteres.</small>
+          </div>
+
+          <div class="field-group">
+            <label for="status">Status</label>
+            <select id="status" name="status">
+              <option value="Não visto">Não visto</option>
+              <option value="Visto">Visto</option>
+            </select>
+          </div>
+
+          <p class="feedback" id="formFeedback" role="alert"></p>
+
+          <div class="form-actions">
+            <button class="button button--primary" id="submitButton" type="submit">Salvar filme</button>
+            <button class="button button--secondary hidden" id="cancelEditButton" type="button">Cancelar edição</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Lista de filmes -->
+      <section class="catalog-card glass-panel" aria-labelledby="catalogTitle">
+        <p class="section-label">Catálogo</p>
+        <h2 id="catalogTitle">Filmes da watchlist</h2>
+        <p class="section-description">Use a busca e o filtro para encontrar filmes específicos.</p>
+
+        <div class="filters">
+          <div class="field-group">
+            <label for="searchInput">Buscar por nome</label>
+            <input id="searchInput" type="search" placeholder="Digite parte do título" autocomplete="off" />
+          </div>
+
+          <div class="field-group">
+            <label for="statusFilter">Filtrar por status</label>
+            <select id="statusFilter">
+              <option value="Todos">Todos</option>
+              <option value="Não visto">Não vistos</option>
+              <option value="Visto">Vistos</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="movie-list" id="movieList" aria-live="polite"></div>
+      </section>
+    </section>
+  </main>
+
+  <!-- Ordem importante: Model, View, Controller e por último o app. -->
+  <script src="assets/js/model/Movie.js"></script>
+  <script src="assets/js/model/MovieRepository.js"></script>
+  <script src="assets/js/view/MovieView.js"></script>
+  <script src="assets/js/controller/MovieController.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
