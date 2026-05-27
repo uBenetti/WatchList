@@ -4,7 +4,7 @@
   Se o projeto evoluir, esta seria a parte trocada por uma API ou banco real.
 */
 class MovieRepository {
-  constructor(storageKey = "watchlist_movies_mvc_v2") {
+  constructor(storageKey = "watchlist_movies_mvvm_v2") {
     this.storageKey = storageKey;
     this.seedInitialData();
   }

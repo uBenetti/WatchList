@@ -2,10 +2,11 @@
   VIEW: MovieView
   A View cuida da tela.
   Ela lê campos, escuta cliques e desenha os cards no HTML.
-  Ela não decide regras de negócio e não salva dados diretamente.
+  Ela não decide regras de negócio, não salva dados diretamente e chama as ações expostas pelo ViewModel.
 */
 class MovieView {
-  constructor() {
+  constructor(viewModel) {
+    this.viewModel = viewModel;
     this.form = document.querySelector("#movieForm");
     this.movieIdInput = document.querySelector("#movieId");
     this.titleInput = document.querySelector("#title");
@@ -21,12 +22,29 @@ class MovieView {
     this.movieList = document.querySelector("#movieList");
     this.totalMovies = document.querySelector("#totalMovies");
     this.watchedMovies = document.querySelector("#watchedMovies");
+    this.lastEditingMovieId = null;
+
+    this.bindEvents();
+    this.viewModel.subscribe((state) => this.render(state));
+  }
+
+  bindEvents() {
+    this.bindSubmit((movieData) => this.viewModel.handleSubmit(movieData));
+    this.bindCancelEdit(() => this.viewModel.cancelEdit());
+    this.bindSearch((filters) => this.viewModel.updateFilters(filters));
+    this.bindEdit((movieId) => this.viewModel.prepareEdit(movieId));
+    this.bindDelete((movieId) => this.confirmAndDelete(movieId));
   }
 
   bindSubmit(handler) {
     this.form.addEventListener("submit", (event) => {
       event.preventDefault();
-      handler(this.getFormData());
+      const wasSaved = handler(this.getFormData());
+
+      if (wasSaved) {
+        this.lastEditingMovieId = null;
+        this.resetForm();
+      }
     });
   }
 
@@ -61,6 +79,16 @@ class MovieView {
     });
   }
 
+  confirmAndDelete(movieId) {
+    const wantsToDelete = confirm("Deseja excluir este filme da watchlist?");
+
+    if (!wantsToDelete) {
+      return;
+    }
+
+    this.viewModel.deleteMovie(movieId);
+  }
+
   getFormData() {
     return {
       id: this.movieIdInput.value,
@@ -77,6 +105,32 @@ class MovieView {
       searchTerm: this.searchInput.value,
       status: this.statusFilter.value,
     };
+  }
+
+  render(state) {
+    this.renderStats(state.stats);
+    this.renderMovies(state.movies);
+    this.renderFeedback(state.feedback);
+    this.renderFormState(state.editingMovie);
+  }
+
+  renderFormState(movie) {
+    const editingMovieId = movie ? movie.id : null;
+
+    if (editingMovieId === this.lastEditingMovieId) {
+      return;
+    }
+
+    this.lastEditingMovieId = editingMovieId;
+
+    if (movie) {
+      this.fillForm(movie);
+      return;
+    }
+
+    if (this.movieIdInput.value) {
+      this.resetForm();
+    }
   }
 
   fillForm(movie) {
@@ -97,6 +151,14 @@ class MovieView {
     this.movieIdInput.value = "";
     this.submitButton.textContent = "Salvar filme";
     this.cancelEditButton.classList.add("hidden");
+  }
+
+  renderFeedback(message) {
+    if (message) {
+      this.showFeedback(message);
+      return;
+    }
+
     this.clearFeedback();
   }
 
